@@ -2,12 +2,12 @@
 #  define CATCH_CONFIG_MAIN
 #endif
 
-#include "atm.hpp"
-#include "catch.hpp"
-
 #include <cmath>
 #include <fstream>
 #include <sstream>
+
+#include "atm.hpp"
+#include "catch.hpp"
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //                             Helper Definitions //
@@ -18,7 +18,7 @@ bool CompareFiles(const std::string& p1, const std::string& p2) {
   std::ifstream f2(p2);
 
   if (f1.fail() || f2.fail()) {
-    return false;  // file problem
+    return false;  // file problem.
   }
 
   std::string f1_read;
@@ -91,7 +91,8 @@ TEST_CASE("Example: Print Prompt Ledger", "[ex-3]") {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // --- CheckBalance (reference - no bugs) ---
-TEST_CASE("CheckBalance: Valid account returns correct balance", "[CheckBalance]") {
+TEST_CASE("CheckBalance: Valid account returns correct balance",
+          "[CheckBalance]") {
   Atm atm;
   atm.RegisterAccount(11111111, 2222, "Alice", 100.50);
   REQUIRE(atm.CheckBalance(11111111, 2222) == 100.50);
@@ -108,15 +109,15 @@ TEST_CASE("RegisterAccount: Duplicate card_num and pin throws invalid_argument",
           "[RegisterAccount]") {
   Atm atm;
   atm.RegisterAccount(12345678, 1234, "Bob", 500.0);
-  REQUIRE_THROWS_AS(
-      atm.RegisterAccount(12345678, 1234, "Bob Clone", 100.0),
-      std::invalid_argument);
+  REQUIRE_THROWS_AS(atm.RegisterAccount(12345678, 1234, "Bob Clone", 100.0),
+                    std::invalid_argument);
   // Verify original account unchanged
   REQUIRE(atm.CheckBalance(12345678, 1234) == 500.0);
 }
 
-TEST_CASE("RegisterAccount: Same card_num different pin creates separate accounts",
-          "[RegisterAccount]") {
+TEST_CASE(
+    "RegisterAccount: Same card_num different pin creates separate accounts",
+    "[RegisterAccount]") {
   Atm atm;
   atm.RegisterAccount(12345678, 1111, "User1", 100.0);
   atm.RegisterAccount(12345678, 2222, "User2", 200.0);
@@ -125,8 +126,9 @@ TEST_CASE("RegisterAccount: Same card_num different pin creates separate account
   REQUIRE(atm.GetAccounts().size() == 2);
 }
 
-TEST_CASE("RegisterAccount: Same pin different card_num creates separate accounts",
-          "[RegisterAccount]") {
+TEST_CASE(
+    "RegisterAccount: Same pin different card_num creates separate accounts",
+    "[RegisterAccount]") {
   Atm atm;
   atm.RegisterAccount(11111111, 1234, "UserA", 50.0);
   atm.RegisterAccount(22222222, 1234, "UserB", 75.0);
@@ -185,7 +187,8 @@ TEST_CASE("WithdrawCash: Amount exceeding balance throws runtime_error",
   REQUIRE(atm.CheckBalance(55555557, 5557) == 50.0);
 }
 
-TEST_CASE("WithdrawCash: Withdrawing exact balance succeeds", "[WithdrawCash]") {
+TEST_CASE("WithdrawCash: Withdrawing exact balance succeeds",
+          "[WithdrawCash]") {
   Atm atm;
   atm.RegisterAccount(55555558, 5558, "ExactWithdraw", 75.25);
   atm.WithdrawCash(55555558, 5558, 75.25);
