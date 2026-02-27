@@ -1,3 +1,11 @@
 bin/*
 
 !bin/.gitkeep
+
+# Test output files
+prompt.txt
+empty_ledger.txt
+format_ledger.txt
+multi_ledger.txt
+ledger.txt
+ledger_output.txt
